@@ -1,0 +1,5 @@
+vendor/
+robots.txt
+sitemap.xml
+composer.lock
+app/Logs/php-error.log
