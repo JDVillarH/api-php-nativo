@@ -1,5 +1,7 @@
 <?php
 
+use App\Controller\AbilitiesController;
+use App\Controller\MovesController;
 use App\Controller\PokemonController;
 use App\Controller\TypesController;
 use App\Core\ErrorLog;
@@ -27,7 +29,12 @@ $router->mount("/api/v1", function () use ($router) {
 
     //Tipos
     $router->get("/types", [TypesController::class, "index"]);
-    $router->get("/types/{id}", [TypesController::class, "show"]);
+
+    //Moves
+    $router->get("/moves", [MovesController::class, "index"]);
+
+    //Habilidades
+    $router->get("/abilities", [AbilitiesController::class, "index"]);
 });
 
 // Ejecuta el enrutador

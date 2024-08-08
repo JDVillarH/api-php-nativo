@@ -52,14 +52,15 @@ class Model
      * Ejecuta una consulta personalizada
      * 
      * @param string $query Consulta a ejecutar
+     * @param int $page Página actual
      * @param int $perPage Cantidad de filas por página
      * 
      * @return Model Retorna el resultado de la consulta
      */
-    public final function customSingleQuery(string $sqlQuery, int $perPage = null): Model
+    public final function customQuery(string $sqlQuery, int $page = null, int $perPage = null): Model
     {
         if (!is_null($perPage)) {
-            $offset = max(0, (getIntegerParam("page", 1) - 1) * $perPage);
+            $offset = max(0, ($page - 1) * $perPage);
             $this->queryResult = $this->connection->query($sqlQuery . " LIMIT $perPage OFFSET $offset");
         } else {
             $this->queryResult = $this->connection->query($sqlQuery);
@@ -68,18 +69,33 @@ class Model
         return $this;
     }
 
-    public final function pagination(int $perPage, int $pageParam, int $totalRows): array
+    /**
+     * Genera la paginación
+     * 
+     * @param string $sqlQuery Consulta SQL que devuelve la cantidad de filas
+     * @param int $page Página actual
+     * @param int $perPage Cantidad de filas por página
+     * 
+     * @return array Paginación
+     */
+    public final function pagination(string $sqlQuery, int $page, int $perPage): array
     {
+        $totalRows = $this->customQuery($sqlQuery)->first()->totalRows;
         $totalPages = ceil($totalRows / $perPage);
         $currentURL = getCurrentURL();
 
-        if (strpos($currentURL, "page=$pageParam") === false) {
-            $querySeparator = (strpos($currentURL, "?") === false) ? "?" : "&";
-            $currentURL .= $querySeparator . "page=$pageParam";
+        // Validar si existe la página
+        if ($page > $totalPages) {
+            die(HttpResponse::status404(["message" => "404 Not Found"]));
         }
 
-        $nextPage = ($pageParam < $totalPages) ? str_replace("page=$pageParam", "page=" . ($pageParam + 1), $currentURL) : null;
-        $previousPage = ($pageParam > 1) ? str_replace("page=$pageParam", "page=" . ($pageParam - 1), $currentURL) : null;
+        if (strpos($currentURL, "page=$page") === false) {
+            $querySeparator = (strpos($currentURL, "?") === false) ? "?" : "&";
+            $currentURL .= $querySeparator . "page=$page";
+        }
+
+        $nextPage = ($page < $totalPages) ? str_replace("page=$page", "page=" . ($page + 1), $currentURL) : null;
+        $previousPage = ($page > 1) ? str_replace("page=$page", "page=" . ($page - 1), $currentURL) : null;
 
         return ["next" => $nextPage, "previous" => $previousPage];
     }

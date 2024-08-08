@@ -2,9 +2,9 @@
 
 namespace App\Controller;
 
-use App\Model\TypesModel;
+use App\Model\MovesModel;
 
-class TypesController extends Controller
+class MovesController extends Controller
 {
     public static function index(): void
     {
@@ -16,7 +16,7 @@ class TypesController extends Controller
         $perPage = $validation->getValidData()["perPage"] ?? 20;
 
         // Ejecutar la acción
-        $typesModel = new TypesModel();
-        $typesModel->index($page, $perPage);
+        $movesModel = new MovesModel();
+        $movesModel->index($page, $perPage);
     }
 }

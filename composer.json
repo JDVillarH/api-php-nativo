@@ -1,8 +1,8 @@
 {
     "require": {
         "vlucas/phpdotenv": "^5.6",
-        "firebase/php-jwt": "^6.10",
-        "bramus/router": "^1.6"
+        "bramus/router": "^1.6",
+        "rakit/validation": "^1.4"
     },
     "autoload": {
         "psr-4": {

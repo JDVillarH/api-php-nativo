@@ -40,15 +40,3 @@ function getCurrentURL($removeQueryParams = false): string
     }
     return getBaseURL() . str_replace(getDirectoryPath(), "", $currentURI);
 }
-
-/**
- * Obtiene un parámetro de la URL y lo convierte a un entero.
- * @param string $paramName El nombre del parámetro de la URL.
- * @param int $defaultValue El valor por defecto del parámetro.
- * @return int El valor del parámetro de la URL o el valor por defecto.
- */
-function getIntegerParam(string $paramName, int $defaultValue = 0): int
-{
-    $param = filter_input(INPUT_GET, $paramName, FILTER_VALIDATE_INT) ?? $defaultValue;
-    return $param > 0 ? $param : $defaultValue;
-}

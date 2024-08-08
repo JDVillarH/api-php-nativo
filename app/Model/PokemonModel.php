@@ -13,23 +13,20 @@ class PokemonModel extends Model
         parent::__construct();
     }
 
-    public function index($perPageParam, $pageParam): void
+    public function index($page, $perPage): void
     {
         try {
-            $currentURL = getCurrentURL(true);
-
             // Paginación
-            $sqlCountRows = $this->customSingleQuery("SELECT COUNT(id) AS totalRows FROM pokemon")->first();
-            $pagination = $this->pagination($perPageParam, $pageParam, $sqlCountRows->totalRows);
+            $pagination = $this->pagination("SELECT COUNT(id) AS totalRows FROM pokemon", $page, $perPage);
 
             // Información
-            $sqlQueryPokemon = "SELECT name, CONCAT('$currentURL/', id) AS url FROM pokemon";
-            $results = $this->customSingleQuery($sqlQueryPokemon, $perPageParam)->get();
+            $currentURL = getCurrentURL(true);
+            $results = $this->customQuery("SELECT name, CONCAT('$currentURL/', id) AS url FROM pokemon", $page, $perPage)->get();
 
-            HttpResponse::status200($results, $pagination);
+            die(HttpResponse::status200($results, $pagination));
         } catch (\mysqli_sql_exception $e) {
             error_log("Pokemon::getPokemon -> {$e->getMessage()}");
-            HttpResponse::status500(["message" => "Ha ocurrido un error en el servidor"]);
+            die(HttpResponse::status500(["message" => "Ha ocurrido un error en el servidor"]));
         }
     }
 
@@ -37,11 +34,17 @@ class PokemonModel extends Model
     {
         try {
             $results = [];
-            $results = $this->customSingleQuery("SELECT name, image FROM pokemon WHERE id = $id")->get()[0];
-            $results["stats"] = $this->customSingleQuery("SELECT name, base_stat FROM pokemon_stat_view WHERE pokemon_id = $id")->get();
-            $results["types"] = $this->customSingleQuery("SELECT name FROM pokemon_type_view WHERE pokemon_id = $id")->get();
-            $results["moves"] = $this->customSingleQuery("SELECT name FROM pokemon_move_view WHERE pokemon_id = $id")->get();
-            $results["abilities"] = $this->customSingleQuery("SELECT name FROM pokemon_ability_view WHERE pokemon_id = $id")->get();
+            $results = $this->customQuery("SELECT name, image FROM pokemon WHERE id = $id")->get()[0];
+
+            // No existe el pokemon
+            if (empty($results)) {
+                die(HttpResponse::status404(["message" => "404 Not Found"]));
+            }
+
+            $results["stats"] = $this->customQuery("SELECT name, base_stat FROM pokemon_stat_view WHERE pokemon_id = $id")->get();
+            $results["types"] = $this->customQuery("SELECT name FROM pokemon_type_view WHERE pokemon_id = $id")->get();
+            $results["moves"] = $this->customQuery("SELECT name FROM pokemon_move_view WHERE pokemon_id = $id")->get();
+            $results["abilities"] = $this->customQuery("SELECT name FROM pokemon_ability_view WHERE pokemon_id = $id")->get();
 
             HttpResponse::status200($results);
         } catch (\mysqli_sql_exception $e) {

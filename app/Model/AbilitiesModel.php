@@ -5,7 +5,7 @@ namespace App\Model;
 use App\Core\HttpResponse;
 use App\Core\Model;
 
-class TypesModel extends Model
+class AbilitiesModel extends Model
 {
 
     public function __construct()
@@ -17,10 +17,10 @@ class TypesModel extends Model
     {
         try {
             // Paginación
-            $pagination = $this->pagination("SELECT COUNT(id) AS totalRows FROM types", $page, $perPage);
+            $pagination = $this->pagination("SELECT COUNT(id) AS totalRows FROM abilities", $page, $perPage);
 
             // Información
-            $results = $this->customQuery("SELECT name FROM types", $page, $perPage)->get();
+            $results = $this->customQuery("SELECT name FROM abilities", $page, $perPage)->get();
 
             die(HttpResponse::status200($results, $pagination));
         } catch (\mysqli_sql_exception $e) {

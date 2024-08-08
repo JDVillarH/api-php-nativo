@@ -5,9 +5,11 @@ RewriteEngine On
 Options All -Indexes
 Options -MultiViews
 
-# Permitir URLs amigables
+# Si el archivo y el directorio no existen, redirigir a index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+
+# Redireccionar todas las peticiones a index.php
 RewriteRule ^([0-9a-zA-Z\-_\/]+)$ index.php [QSA,L]
 
 # Prevenir acceso a ciertos archivos
