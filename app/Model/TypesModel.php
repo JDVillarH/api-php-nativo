@@ -13,14 +13,14 @@ class TypesModel extends Model
         parent::__construct();
     }
 
-    public function index($page, $perPage): void
+    public function index($page, $limit): void
     {
         try {
             // Paginación
-            $pagination = $this->pagination("SELECT COUNT(id) AS totalRows FROM types", $page, $perPage);
+            $pagination = $this->pagination("SELECT COUNT(id) AS totalRows FROM types", $page, $limit);
 
             // Información
-            $results = $this->customQuery("SELECT name FROM types", $page, $perPage)->get();
+            $results = $this->customQuery("SELECT name FROM types", $page, $limit)->get();
 
             die(HttpResponse::status200($results, $pagination));
         } catch (\mysqli_sql_exception $e) {

@@ -23,7 +23,10 @@ HttpResponse::httpResponse($router->getRequestMethod());
 
 // Rutas
 $router->mount("/api/v1", function () use ($router) {
+
     //Pokemon
+    $router->options("/pokemon", fn() => HttpResponse::status204());
+
     $router->get("/pokemon", [PokemonController::class, "index"]);
     $router->get("/pokemon/{id}", [PokemonController::class, "show"]);
 

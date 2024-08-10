@@ -13,15 +13,15 @@ class PokemonModel extends Model
         parent::__construct();
     }
 
-    public function index($page, $perPage): void
+    public function index($page, $limit): void
     {
         try {
             // Paginación
-            $pagination = $this->pagination("SELECT COUNT(id) AS totalRows FROM pokemon", $page, $perPage);
+            $pagination = $this->pagination("SELECT COUNT(id) AS totalRows FROM pokemon", $page, $limit);
 
             // Información
             $currentURL = getCurrentURL(true);
-            $results = $this->customQuery("SELECT name, CONCAT('$currentURL/', id) AS url FROM pokemon", $page, $perPage)->get();
+            $results = $this->customQuery("SELECT name, CONCAT('$currentURL/', id) AS url FROM pokemon", $page, $limit)->get();
 
             die(HttpResponse::status200($results, $pagination));
         } catch (\mysqli_sql_exception $e) {

@@ -27,7 +27,7 @@ class Model
     private function connect()
     {
         $this->connection = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_DATABASE);
-        $this->connection->set_charset("utf8mb4");
+        $this->connection->set_charset(DB_CHARSET);
 
         if ($this->connection->connect_error) {
             error_log("Error al conectar con la base de datos: {$this->connection->connect_error})");
@@ -38,30 +38,19 @@ class Model
     }
 
     /**
-     * Escapar una cadena de caracteres
-     * 
-     * @param string $string Cadena de caracteres a escapar
-     * @return string Cadena de caracteres escapadas
-     */
-    public final function escapeString(string $string): string
-    {
-        return $this->connection->real_escape_string($string);
-    }
-
-    /**
      * Ejecuta una consulta personalizada
      * 
      * @param string $query Consulta a ejecutar
      * @param int $page Página actual
-     * @param int $perPage Cantidad de filas por página
+     * @param int $limit Cantidad de filas por página
      * 
      * @return Model Retorna el resultado de la consulta
      */
-    public final function customQuery(string $sqlQuery, int $page = null, int $perPage = null): Model
+    public final function customQuery(string $sqlQuery, int $page = null, int $limit = null): Model
     {
-        if (!is_null($perPage)) {
-            $offset = max(0, ($page - 1) * $perPage);
-            $this->queryResult = $this->connection->query($sqlQuery . " LIMIT $perPage OFFSET $offset");
+        if (!is_null($limit)) {
+            $offset = max(0, ($page - 1) * $limit);
+            $this->queryResult = $this->connection->query($sqlQuery . " LIMIT $limit OFFSET $offset");
         } else {
             $this->queryResult = $this->connection->query($sqlQuery);
         }
@@ -74,14 +63,14 @@ class Model
      * 
      * @param string $sqlQuery Consulta SQL que devuelve la cantidad de filas
      * @param int $page Página actual
-     * @param int $perPage Cantidad de filas por página
+     * @param int $limit Cantidad de filas por página
      * 
      * @return array Paginación
      */
-    public final function pagination(string $sqlQuery, int $page, int $perPage): array
+    public final function pagination(string $sqlQuery, int $page, int $limit): array
     {
-        $totalRows = $this->customQuery($sqlQuery)->first()->totalRows;
-        $totalPages = ceil($totalRows / $perPage);
+        $totalRows = (int) $this->customQuery($sqlQuery)->first()->totalRows;
+        $totalPages = ceil($totalRows / $limit);
         $currentURL = getCurrentURL();
 
         // Validar si existe la página
@@ -97,7 +86,7 @@ class Model
         $nextPage = ($page < $totalPages) ? str_replace("page=$page", "page=" . ($page + 1), $currentURL) : null;
         $previousPage = ($page > 1) ? str_replace("page=$page", "page=" . ($page - 1), $currentURL) : null;
 
-        return ["next" => $nextPage, "previous" => $previousPage];
+        return ["next" => $nextPage, "previous" => $previousPage, "total" => $totalRows];
     }
 
 
