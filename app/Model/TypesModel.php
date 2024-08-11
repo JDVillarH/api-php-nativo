@@ -20,7 +20,7 @@ class TypesModel extends Model
             $pagination = $this->pagination("SELECT COUNT(id) AS totalRows FROM types", $page, $limit);
 
             // Información
-            $results = $this->customQuery("SELECT name FROM types", $page, $limit)->get();
+            $results = $this->customQuery("SELECT * FROM types", $page, $limit)->get();
 
             die(HttpResponse::status200($results, $pagination));
         } catch (\mysqli_sql_exception $e) {

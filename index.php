@@ -24,6 +24,17 @@ HttpResponse::httpResponse($router->getRequestMethod());
 // Rutas
 $router->mount("/api/v1", function () use ($router) {
 
+    $router->get("/", function () {
+        $baseURL = getBaseURL();
+        $routes = [
+            "pokemon" => "{$baseURL}api/v1/pokemon",
+            "types" => "{$baseURL}api/v1/types",
+            "moves" => "{$baseURL}api/v1/moves",
+            "abilities" => "{$baseURL}api/v1/abilities",
+        ];
+        return HttpResponse::status200($routes);
+    });
+
     //Pokemon
     $router->options("/pokemon", fn() => HttpResponse::status204());
 

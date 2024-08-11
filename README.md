@@ -49,6 +49,21 @@ Puedes utilizar este proyecto para APIs de uso personal dado que el proyecto es 
 
 ## Uso
 
+#### Listado de recursos
+
+```http
+  GET /api/v1/
+```
+
+```json
+{
+  "pokemon": "https://ejemplo/api/v1/pokemon",
+  "types": "https://ejemplo/api/v1/types",
+  "moves": "https://ejemplo/api/v1/moves",
+  "abilities": "https://ejemplo/api/v1/abilities"
+}
+```
+
 #### Listado de pokemon
 
 ```http
@@ -80,7 +95,7 @@ Puedes utilizar este proyecto para APIs de uso personal dado que el proyecto es 
 }
 ```
 
-#### Listado de pokemon
+#### Listado de tipos de pokemon
 
 ```http
   GET /api/v1/types
@@ -93,7 +108,7 @@ Puedes utilizar este proyecto para APIs de uso personal dado que el proyecto es 
 ...
 ```
 
-#### Listado de pokemon
+#### Listado de movimientos de pokemon
 
 ```http
   GET /api/v1/moves
@@ -106,7 +121,7 @@ Puedes utilizar este proyecto para APIs de uso personal dado que el proyecto es 
 ...
 ```
 
-#### Listado de pokemon
+#### Listado de habilidades de pokemon
 
 ```http
   GET /api/v1/abilities
