@@ -25,7 +25,7 @@ class PokemonModel extends Model
 
             die(HttpResponse::status200($results, $pagination));
         } catch (\mysqli_sql_exception $e) {
-            error_log("Pokemon::getPokemon -> {$e->getMessage()}");
+            error_log("PokemonModel->index -> {$e->getMessage()}");
             die(HttpResponse::status500(["message" => "Ha ocurrido un error en el servidor"]));
         }
     }
@@ -48,7 +48,7 @@ class PokemonModel extends Model
 
             HttpResponse::status200($results);
         } catch (\mysqli_sql_exception $e) {
-            error_log("Pokemon::getPokemon -> {$e->getMessage()}");
+            error_log("PokemonModel->show -> {$e->getMessage()}");
             HttpResponse::status500(["message" => "Ha ocurrido un error en el servidor"]);
         }
     }

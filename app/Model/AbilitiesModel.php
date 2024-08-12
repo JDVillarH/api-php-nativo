@@ -24,7 +24,7 @@ class AbilitiesModel extends Model
 
             die(HttpResponse::status200($results, $pagination));
         } catch (\mysqli_sql_exception $e) {
-            error_log("Pokemon::getPokemon -> {$e->getMessage()}");
+            error_log("AbilitiesModel->index -> {$e->getMessage()}");
             die(HttpResponse::status500(["message" => "Ha ocurrido un error en el servidor"]));
         }
     }

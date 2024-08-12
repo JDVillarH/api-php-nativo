@@ -44,7 +44,7 @@ $router->mount("/api/v1", function () use ($router) {
     //Tipos
     $router->get("/types", [TypesController::class, "index"]);
 
-    //Moves
+    //Movimientos
     $router->get("/moves", [MovesController::class, "index"]);
 
     //Habilidades
