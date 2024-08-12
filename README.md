@@ -103,6 +103,7 @@ Puedes utilizar este proyecto para APIs de uso personal dado que el proyecto es 
 
 ```json
 {
+    "id": 1,
     "name": "normal"
 },
 ...
@@ -116,6 +117,7 @@ Puedes utilizar este proyecto para APIs de uso personal dado que el proyecto es 
 
 ```json
 {
+    "id": 1,
     "name": "pound"
 },
 ...
@@ -129,6 +131,7 @@ Puedes utilizar este proyecto para APIs de uso personal dado que el proyecto es 
 
 ```json
 {
+    "id": 1,
     "name": "stench"
 },
 ...
