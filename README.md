@@ -41,11 +41,11 @@ Puedes utilizar este proyecto para APIs de uso personal dado que el proyecto es 
 
 - En `public/index.php` se encuentran las rutas y controladores ya definidos para el manejo de las solicitudes.
 
-- En directorio `database` se encuentran los archivos necesarios para importar la estructura e información en tu base de datos de MySQL.
+- El archivo `pokemon.sql.gz` contiene la estructura e información de la base de datos de MySQL, importalo en tu base de datos para que el API funcione correctamente.
 
 - En el archivo `.env` encontrarás las variables `DB` en las que podrás ingresar las credenciales para tu base de datos y con `APP_LOCAL` para definir si tu API se encuentra en local o producción.
 
-- En el archivo `app/config/constants.php` encontrarás la variable `ALLOWED_DOMAINS` en la cual podrás agregar los dominios a los cuales quieres darle permisos de interactuar con tu API.
+- En el archivo `app/config/constants.php` encontrarás la variable `ALLOWED_DOMAINS` en la cual podrás agregar los dominios a los cuales quieres darle permisos de interactuar con tu API o si no quieres limitar el acceso a dominios, puedes dejar la variable con el valor "\*".
 
 ## Uso
 

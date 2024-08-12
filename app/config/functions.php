@@ -35,8 +35,12 @@ function getBaseURL(): string
 function getCurrentURL($removeQueryParams = false): string
 {
     $currentURI = $_SERVER['REQUEST_URI'];
+    $baseURL = getBaseURL();
+    $directoryPath = getDirectoryPath();
+
     if ($removeQueryParams) {
-        $currentURI = strstr($currentURI, '?') ? substr($currentURI, 0, strpos($currentURI, '?')) : $currentURI;
+        $currentURI = explode('?', $currentURI)[0];
     }
-    return getBaseURL() . str_replace(getDirectoryPath(), "", $currentURI);
+
+    return rtrim($baseURL, '/') . ($directoryPath === "/" ? $currentURI : str_replace($directoryPath, "", $currentURI));
 }
